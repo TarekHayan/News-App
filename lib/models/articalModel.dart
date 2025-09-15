@@ -23,7 +23,7 @@ class Articalmodel {
 
   String checkImage() {
     if (image == null || image!.isEmpty) {
-      return 'https://media.istockphoto.com/id/1409329028/vector/no-picture-available-placeholder-thumbnail-icon-illustration-design.jpg?s=612x612&w=0&k=20&c=_zOuJu755g2eEUioiOUdz_mHKJQJn-tDgIAhQzyeKUQ=';
+      return 'assets/Event-Image-Not-Found.jpg';
     }
     return image!;
   }

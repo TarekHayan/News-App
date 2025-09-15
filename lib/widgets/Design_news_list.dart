@@ -20,6 +20,8 @@ class DesignNewsList extends StatelessWidget {
               imageUrl: articalmodel.checkImage(),
               placeholder: (context, url) =>
                   Center(child: CircleLoadind(color: Color(0xffcbff56))),
+              errorWidget: (context, url, error) =>
+                  Image.asset("assets/Event-Image-Not-Found.jpg"),
               height: 250,
               width: double.infinity,
               fit: BoxFit.cover,
