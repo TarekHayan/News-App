@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/views/HomePadge.dart';
+import 'package:news_app/widgets/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,6 +11,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: HomePadge());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: SplashScreen());
   }
 }
