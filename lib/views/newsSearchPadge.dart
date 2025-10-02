@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/service/getNewsData.dart';
-import 'package:news_app/widgets/viewNews.dart';
+import '../service/getNewsData.dart';
+import '../widgets/viewNews.dart';
 
 class Newssearchpadge extends StatelessWidget {
   const Newssearchpadge({super.key, required this.valu});

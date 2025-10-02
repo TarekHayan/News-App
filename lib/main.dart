@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/views/HomePadge.dart';
-import 'package:news_app/widgets/splash_screen.dart';
+import 'widgets/splash_screen.dart';
 
 void main() {
   runApp(MyApp());

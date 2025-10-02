@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/views/newsSearchPadge.dart';
+import 'package:flutter_offline/flutter_offline.dart';
+import 'newsSearchPadge.dart';
+import '../widgets/network_error.dart';
 
 class Newssearch extends StatelessWidget {
   const Newssearch({super.key});
@@ -19,7 +21,22 @@ class Newssearch extends StatelessWidget {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) {
-                  return Newssearchpadge(valu: value);
+                  return OfflineBuilder(
+                    connectivityBuilder:
+                        (
+                          BuildContext context,
+                          List<ConnectivityResult> connectivity,
+                          Widget child,
+                        ) {
+                          final bool connected = !connectivity.contains(
+                            ConnectivityResult.none,
+                          );
+                          return connected
+                              ? Newssearchpadge(valu: value)
+                              : NetworkError();
+                        },
+                    child: Container(),
+                  );
                 },
               ),
             );

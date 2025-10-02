@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/service/getNewsData.dart';
-import 'package:news_app/views/newsSearch.dart';
-import 'package:news_app/widgets/categery_list_veiw.dart';
-//import 'package:news_app/widgets/news_list.dart';
-//import 'package:news_app/widgets/news_list_view.dart';
-import 'package:news_app/widgets/viewNews.dart';
-//import 'package:news_app/widgets/categeryCards.dart';
+import 'package:flutter_offline/flutter_offline.dart';
+import '../service/getNewsData.dart';
+import 'newsSearch.dart';
+import '../widgets/categery_list_veiw.dart';
+import '../widgets/network_error.dart';
+import '../widgets/viewNews.dart';
 
 class HomePadge extends StatelessWidget {
   const HomePadge({super.key});
@@ -59,37 +58,56 @@ class HomePadge extends StatelessWidget {
         ),
       ),
 
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(child: CategeryListVeiw()),
-          SliverToBoxAdapter(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Text(
-                  'Top Headlines',
-                  style: TextStyle(
-                    color: Color(0xffe1ff49),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                  ),
+      body: OfflineBuilder(
+        connectivityBuilder:
+            (
+              BuildContext context,
+              List<ConnectivityResult> connectivity,
+              Widget child,
+            ) {
+              final bool connected = !connectivity.contains(
+                ConnectivityResult.none,
+              );
+              if (connected) {
+                return ShowHeadlinesNews();
+              } else {
+                return NetworkError();
+              }
+            },
+        child: Container(),
+      ),
+    );
+  }
+}
+
+class ShowHeadlinesNews extends StatelessWidget {
+  const ShowHeadlinesNews({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(child: CategeryListVeiw()),
+        SliverToBoxAdapter(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: Text(
+                'Top Headlines',
+                style: TextStyle(
+                  color: Color(0xffe1ff49),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w900,
                 ),
               ),
             ),
           ),
-          ViewNews(
-            typeNews: Getnewsservice().getheadlines(categry: 'general'),
-            categry: 'general',
-          ),
-        ],
-      ),
-
-      // body: Column(
-      //   children: [
-      //     CategeryListVeiw(),
-      //     Expanded(child: NewsListView()),
-      //   ],
-      // ),
+        ),
+        ViewNews(
+          typeNews: Getnewsservice().getheadlines(categry: 'general'),
+          categry: 'general',
+        ),
+      ],
     );
   }
 }

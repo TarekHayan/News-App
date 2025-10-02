@@ -1,11 +1,8 @@
-//import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/errors/requestError.dart';
-import 'package:news_app/models/articalModel.dart';
-//import 'package:news_app/models/articalModel.dart';
-//import 'package:news_app/service/getNewsData.dart';
-import 'package:news_app/tools/circle_loadind.dart';
-import 'package:news_app/widgets/Build_news_list_view.dart';
+import '../errors/requestError.dart';
+import '../models/articalModel.dart';
+import '../tools/circle_loadind.dart';
+import 'Build_news_list_view.dart';
 
 class ViewNews extends StatefulWidget {
   const ViewNews({super.key, required this.categry, required this.typeNews});

@@ -1,8 +1,6 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:news_app/models/card_data.dart';
-import 'package:news_app/views/categry_news.dart';
+import '../models/card_data.dart';
+import '../views/categry_news.dart';
 
 class Categerycards extends StatelessWidget {
   const Categerycards({super.key, required this.card});
