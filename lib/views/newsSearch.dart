@@ -17,6 +17,7 @@ class Newssearch extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 80),
         child: TextField(
+          
           onSubmitted: (value) {
             Navigator.of(context).push(
               MaterialPageRoute(

@@ -11,19 +11,23 @@ class DesignNewsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadiusGeometry.circular(40),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
-            child: CachedNetworkImage(
-              imageUrl: articalmodel.checkImage(),
-              placeholder: (context, url) =>
-                  Center(child: CircleLoadind(color: Color(0xffcbff56))),
-              errorWidget: (context, url, error) =>
-                  Image.asset("assets/Event-Image-Not-Found.jpg"),
-              height: 250,
-              width: double.infinity,
-              fit: BoxFit.cover,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(40),
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: CachedNetworkImage(
+                imageUrl: articalmodel.checkImage(),
+                placeholder: (context, url) =>
+                    Center(child: CircleLoadind(color: Color(0xffcbff56))),
+                errorWidget: (context, url, error) => Image.asset(
+                  "assets/Event-Image-Not-Found.jpg",
+                  fit: BoxFit.cover,
+                ),
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
@@ -31,6 +35,8 @@ class DesignNewsList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           child: Text(
             articalmodel.checkTitle(),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900,
