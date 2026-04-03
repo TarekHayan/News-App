@@ -71,7 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
-          'Settings',
+          localeProvider.tn('Settings', 'الإعدادات'),
           style: TextStyle(
             color: AppStyle.originalPrimaryColor,
             fontWeight: FontWeight.bold,
@@ -85,16 +85,16 @@ class _SettingsPageState extends State<SettingsPage> {
             // ── Notifications ─────────────────────────────────────
             _sectionCard(
               child: SwitchListTile(
-                title: const Text(
-                  'Notifications',
+                title: Text(
+                  localeProvider.tn('Notifications', 'الإشعارات'),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                subtitle: const Text(
-                  'Allow daily news alerts',
+                subtitle: Text(
+                  localeProvider.tn('Allow daily news alerts', 'تفعيل تنبيهات الأخبار اليومية'),
                   style: TextStyle(color: Colors.grey, fontSize: 13),
                 ),
                 value: _notificationsEnabled,
@@ -141,22 +141,15 @@ class _SettingsPageState extends State<SettingsPage> {
                           size: 28,
                         ),
                         const SizedBox(width: 14),
-                        const Column(
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Language',
-                              style: TextStyle(
+                              localeProvider.tn('Language', 'اللغة'),
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            Text(
-                              'News translation language',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 13,
                               ),
                             ),
                           ],

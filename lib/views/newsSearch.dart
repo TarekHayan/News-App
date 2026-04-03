@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
+import 'package:news_app/core/providers/locale_provider.dart';
+import 'package:provider/provider.dart';
 import 'newsSearchPadge.dart';
 import '../widgets/network_error.dart';
 import '../core/utils/app_styles.dart';
@@ -9,12 +11,18 @@ class Newssearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context);
+
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
-          'Search',
-          style: TextStyle(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          localeProvider.tn('Search', 'البحث'),
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w600,
             fontSize: 20,
@@ -25,12 +33,14 @@ class Newssearch extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: localeProvider.isArabic
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 30),
-            const Text(
-              'Discover',
-              style: TextStyle(
+            Text(
+              localeProvider.tn('Discover', 'اكتشف'),
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 34,
                 fontWeight: FontWeight.bold,
@@ -39,7 +49,10 @@ class Newssearch extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Find news from all over the world',
+              localeProvider.tn(
+                'Find news from all over the world',
+                'ابحث عن الأخبار من جميع أنحاء العالم',
+              ),
               style: TextStyle(color: Colors.grey.shade400, fontSize: 16),
             ),
             const SizedBox(height: 40),
@@ -73,6 +86,9 @@ class Newssearch extends StatelessWidget {
               autofocus: true,
               style: const TextStyle(color: Colors.white, fontSize: 16),
               cursorColor: AppStyle.originalPrimaryColor,
+              textAlign: localeProvider.isArabic
+                  ? TextAlign.right
+                  : TextAlign.left,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: const Color(0xFF1E1E1E),
@@ -88,7 +104,10 @@ class Newssearch extends StatelessWidget {
                     size: 26,
                   ),
                 ),
-                hintText: 'Keywords, topics, or sources...',
+                hintText: localeProvider.tn(
+                  'Keywords, topics, or sources...',
+                  'كلمات مفتاحية، مواضيع، أو مصادر...',
+                ),
                 hintStyle: TextStyle(color: Colors.grey.shade600, fontSize: 16),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),

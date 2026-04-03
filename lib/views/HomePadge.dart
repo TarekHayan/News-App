@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
+import 'package:news_app/core/providers/locale_provider.dart';
+import 'package:provider/provider.dart';
 import '../service/getNewsData.dart';
 import 'newsSearch.dart';
 import '../widgets/categery_list_veiw.dart';
@@ -96,6 +98,7 @@ class ShowHeadlinesNews extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Provider.of<LocaleProvider>(context);
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(child: CategeryListVeiw()),
@@ -104,7 +107,7 @@ class ShowHeadlinesNews extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
-                'Top Headlines',
+                locale.tn('Top Headlines', 'أهم العناوين'),
                 style: TextStyle(
                   color: AppStyle.originalPrimaryColor,
                   fontSize: 20,

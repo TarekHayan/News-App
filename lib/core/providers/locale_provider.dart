@@ -28,6 +28,12 @@ class LocaleProvider extends ChangeNotifier {
     await prefs.setString('app_language', code);
   }
 
+  /// Returns [en] if English is active, otherwise returns [ar].
+  /// Useful for quick UI text translation.
+  String tn(String en, String ar) {
+    return _languageCode == 'en' ? en : ar;
+  }
+
   // ──────────────────────────── Translation ────────────────────────────
 
   /// Returns the translated version of [text].
