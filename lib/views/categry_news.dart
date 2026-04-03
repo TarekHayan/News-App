@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
-import 'package:news_app/utils/app_styles.dart';
+import 'package:news_app/core/utils/app_styles.dart';
 import '../widgets/network_error.dart';
 import '../service/getNewsData.dart';
 import '../widgets/viewNews.dart';
@@ -11,10 +11,7 @@ class CategryNews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
         title: Text(
           categry.toUpperCase(),
           style: TextStyle(

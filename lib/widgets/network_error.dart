@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../utils/app_styles.dart';
+import '../core/utils/app_styles.dart';
 
 class NetworkError extends StatelessWidget {
   const NetworkError({super.key});

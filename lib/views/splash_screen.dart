@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:news_app/utils/app_styles.dart';
+import 'package:news_app/core/utils/app_styles.dart';
 import 'HomePadge.dart';
 
 class SplashScreen extends StatefulWidget {

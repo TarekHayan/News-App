@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/articalModel.dart';
-import '../tools/circle_loadind.dart';
-import '../utils/app_styles.dart';
+import '../core/tools/circle_loadind.dart';
+import '../core/utils/app_styles.dart';
 
 class DesignNewsList extends StatelessWidget {
   const DesignNewsList({super.key, required this.articalmodel});

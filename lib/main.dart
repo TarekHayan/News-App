@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:news_app/core/utils/app_them.dart';
 import 'package:news_app/models/flutter_time_zone.dart';
 import 'package:news_app/models/local_notification.dart';
 import 'views/splash_screen.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       scrollBehavior: CustomScrollBehavior(),
+      theme: AppThems.appThems(),
       home: SplashScreen(),
     );
   }

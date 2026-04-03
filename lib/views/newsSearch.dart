@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'newsSearchPadge.dart';
 import '../widgets/network_error.dart';
-import '../utils/app_styles.dart';
+import '../core/utils/app_styles.dart';
 
 class Newssearch extends StatelessWidget {
   const Newssearch({super.key});
@@ -10,12 +10,8 @@ class Newssearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
         title: const Text(
           'Search',
           style: TextStyle(
@@ -44,10 +40,7 @@ class Newssearch extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               'Find news from all over the world',
-              style: TextStyle(
-                color: Colors.grey.shade400,
-                fontSize: 16,
-              ),
+              style: TextStyle(color: Colors.grey.shade400, fontSize: 16),
             ),
             const SizedBox(height: 40),
             TextField(
@@ -57,18 +50,19 @@ class Newssearch extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) {
                         return OfflineBuilder(
-                          connectivityBuilder: (
-                            BuildContext context,
-                            List<ConnectivityResult> connectivity,
-                            Widget child,
-                          ) {
-                            final bool connected = !connectivity.contains(
-                              ConnectivityResult.none,
-                            );
-                            return connected
-                                ? Newssearchpadge(valu: value)
-                                : NetworkError();
-                          },
+                          connectivityBuilder:
+                              (
+                                BuildContext context,
+                                List<ConnectivityResult> connectivity,
+                                Widget child,
+                              ) {
+                                final bool connected = !connectivity.contains(
+                                  ConnectivityResult.none,
+                                );
+                                return connected
+                                    ? Newssearchpadge(valu: value)
+                                    : NetworkError();
+                              },
                           child: Container(),
                         );
                       },
@@ -95,10 +89,7 @@ class Newssearch extends StatelessWidget {
                   ),
                 ),
                 hintText: 'Keywords, topics, or sources...',
-                hintStyle: TextStyle(
-                  color: Colors.grey.shade600,
-                  fontSize: 16,
-                ),
+                hintStyle: TextStyle(color: Colors.grey.shade600, fontSize: 16),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
                   borderSide: BorderSide.none,

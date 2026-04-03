@@ -5,7 +5,7 @@ import 'newsSearch.dart';
 import '../widgets/categery_list_veiw.dart';
 import '../widgets/network_error.dart';
 import '../widgets/viewNews.dart';
-import '../utils/app_styles.dart';
+import '../core/utils/app_styles.dart';
 import 'settings_page.dart';
 
 class HomePadge extends StatelessWidget {
@@ -14,9 +14,8 @@ class HomePadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        centerTitle: false,
         actions: [
           IconButton(
             onPressed: () {

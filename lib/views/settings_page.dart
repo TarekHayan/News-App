@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import '../utils/app_styles.dart';
+import '../core/utils/app_styles.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -29,7 +29,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _toggleNotifications(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('notifications_enabled', value);
-    
+
     setState(() {
       _notificationsEnabled = value;
     });
@@ -46,16 +46,15 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.transparent,
         title: Text(
           'Settings',
-          style: TextStyle(color: AppStyle.originalPrimaryColor, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            color: AppStyle.originalPrimaryColor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        centerTitle: true,
-        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30),
@@ -70,8 +69,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     color: Colors.black.withOpacity(0.5),
                     blurRadius: 15,
                     offset: const Offset(0, 5),
-                  )
-                ]
+                  ),
+                ],
               ),
               child: SwitchListTile(
                 title: const Text(
@@ -87,15 +86,24 @@ class _SettingsPageState extends State<SettingsPage> {
                   style: TextStyle(color: Colors.grey, fontSize: 13),
                 ),
                 value: _notificationsEnabled,
-                activeColor: AppStyle.originalPrimaryColor,
-                activeTrackColor: AppStyle.originalPrimaryColor.withOpacity(0.4),
+                activeThumbColor: AppStyle.originalPrimaryColor,
+                activeTrackColor: AppStyle.originalPrimaryColor.withOpacity(
+                  0.4,
+                ),
                 inactiveThumbColor: Colors.grey,
                 inactiveTrackColor: Colors.grey.withOpacity(0.2),
-                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10,
+                ),
                 onChanged: _toggleNotifications,
                 secondary: Icon(
-                  _notificationsEnabled ? Icons.notifications_active : Icons.notifications_off,
-                  color: _notificationsEnabled ? AppStyle.originalPrimaryColor : Colors.grey,
+                  _notificationsEnabled
+                      ? Icons.notifications_active
+                      : Icons.notifications_off,
+                  color: _notificationsEnabled
+                      ? AppStyle.originalPrimaryColor
+                      : Colors.grey,
                   size: 28,
                 ),
               ),
