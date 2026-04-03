@@ -8,26 +8,30 @@ class FlutterLocalNotification {
       FlutterLocalNotificationsPlugin();
 
   static Future init() async {
-    AndroidInitializationSettings androidInitializationSettings =
-        AndroidInitializationSettings("@mipmap/ic_launcher");
-    DarwinInitializationSettings darwinInitializationSettings =
-        DarwinInitializationSettings();
+    try {
+      AndroidInitializationSettings androidInitializationSettings =
+          const AndroidInitializationSettings("@mipmap/ic_launcher");
+      DarwinInitializationSettings darwinInitializationSettings =
+          const DarwinInitializationSettings();
 
-    InitializationSettings initializationSettings = InitializationSettings(
-      android: androidInitializationSettings,
-      iOS: darwinInitializationSettings,
-    );
-    await flutterLocalNotificationsPlugin.initialize(
-      settings: initializationSettings,
-    );
+      InitializationSettings initializationSettings = InitializationSettings(
+        android: androidInitializationSettings,
+        iOS: darwinInitializationSettings,
+      );
+      await flutterLocalNotificationsPlugin.initialize(
+        settings: initializationSettings,
+      );
 
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-        >()
-        ?.requestNotificationsPermission();
+      flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >()
+          ?.requestNotificationsPermission();
 
-    await _scheduleDailyNewsIfNeeded();
+      await _scheduleDailyNewsIfNeeded();
+    } catch (e) {
+      print("Error initializing notifications: $e");
+    }
   }
 
   static Future<void> rescheduleFromSavedLanguage() async {
@@ -43,7 +47,7 @@ class FlutterLocalNotification {
     final lang = prefs.getString('app_language') ?? 'en';
     final ar = lang == 'ar';
 
-    final title = ar ? 'تطبيق الأخبار' : 'News App';
+    final title = 'News Cloud';
     final body = ar ? 'توجد أخبار جديدة' : 'New news available';
     final channelName = ar ? 'تحديثات الأخبار' : 'News updates';
 

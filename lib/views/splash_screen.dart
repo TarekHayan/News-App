@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    Timer(const Duration(seconds: 7), () {
+    Timer(const Duration(seconds: 3), () {
       if (!mounted) return;
       Navigator.pushReplacement(
         context,
@@ -91,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen>
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(25),
                     child: Image.asset(
-                      'assets/1024.png',
+                      'assets/images/1024.png',
                       width: 140,
                       height: 140,
                       fit: BoxFit.cover,

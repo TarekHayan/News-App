@@ -7,24 +7,24 @@ class CategoryCarousel extends StatelessWidget {
 
   static const List<CardData> _items = [
     CardData(
-      image: 'assets/mike-kononov-lFv0V3_2H6s-unsplash.jpg',
+      image: 'assets/images/mike-kononov-lFv0V3_2H6s-unsplash.jpg',
       text: 'business',
     ),
     CardData(
-      image: 'assets/jonas-von-werne-8VcWVVsrPBk-unsplash.jpg',
+      image: 'assets/images/jonas-von-werne-8VcWVVsrPBk-unsplash.jpg',
       text: 'entertainment',
     ),
-    CardData(image: 'assets/health.avif', text: 'health'),
+    CardData(image: 'assets/images/health.avif', text: 'health'),
     CardData(
-      image: 'assets/national-cancer-institute-L7en7Lb-Ovc-unsplash.jpg',
+      image: 'assets/images/national-cancer-institute-L7en7Lb-Ovc-unsplash.jpg',
       text: 'science',
     ),
     CardData(
-      image: 'assets/timothy-tan-PAe2UhGo-S4-unsplash.jpg',
+      image: 'assets/images/timothy-tan-PAe2UhGo-S4-unsplash.jpg',
       text: 'sports',
     ),
     CardData(
-      image: 'assets/ales-nesetril-Im7lZjxeLhg-unsplash.jpg',
+      image: 'assets/images/ales-nesetril-Im7lZjxeLhg-unsplash.jpg',
       text: 'technology',
     ),
   ];

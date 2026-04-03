@@ -10,15 +10,27 @@ import 'views/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FlutterTimeZoneClass.init();
-  await FlutterTimeZoneClass.setLocation();
-  await FlutterLocalNotification.init();
 
   final localeCubit = await LocaleCubit.create();
 
   runApp(
     BlocProvider<LocaleCubit>.value(value: localeCubit, child: const MyApp()),
   );
+
+  _initServices();
+}
+
+Future<void> _initServices() async {
+  try {
+    // 1. تهيئة المناطق الزمنية أولاً (ضرورية لجدولة الإشعارات)
+    FlutterTimeZoneClass.init();
+    await FlutterTimeZoneClass.setLocation();
+
+    // 2. تهيئة الإشعارات (تعتمد على الوقت المحلي)
+    await FlutterLocalNotification.init();
+  } catch (e) {
+    debugPrint("Initialization error: $e");
+  }
 }
 
 class MyApp extends StatelessWidget {

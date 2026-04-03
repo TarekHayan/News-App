@@ -1,34 +1,21 @@
-import 'package:dio/dio.dart';
+import 'package:translator/translator.dart';
 
 class TranslationService {
-  static final Dio _dio = Dio(
-    BaseOptions(
-      connectTimeout: const Duration(seconds: 5),
-      receiveTimeout: const Duration(seconds: 5),
-    ),
-  );
+  static final GoogleTranslator _translator = GoogleTranslator();
 
-  /// Translates [text] from English to [targetLang] using the free MyMemory API.
+  /// Translates [text] from English to [targetLang] using the official-like Google Translate engine.
   static Future<String> translate(String text, String targetLang) async {
     if (text.isEmpty) return text;
     try {
-      final response = await _dio.get(
-        'https://api.mymemory.translated.net/get',
-        queryParameters: {
-          'q': text,
-          'langpair': 'en|$targetLang',
-        },
+      final translation = await _translator.translate(
+        text,
+        from: 'en',
+        to: targetLang,
       );
-      final data = response.data;
-      if (data is Map && data['responseStatus'] == 200) {
-        final translated =
-            data['responseData']?['translatedText'] as String?;
-        if (translated != null && translated.isNotEmpty) {
-          return translated;
-        }
-      }
-      return text;
-    } catch (_) {
+      return translation.text;
+    } catch (e) {
+      print("Google Translation Error: $e");
+      // Fallback to original text if fails
       return text;
     }
   }

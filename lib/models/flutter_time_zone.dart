@@ -8,7 +8,12 @@ abstract class FlutterTimeZoneClass {
   }
 
   static Future<void> setLocation() async {
-    final location = await FlutterTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(location.identifier));
+    try {
+      final location = await FlutterTimezone.getLocalTimezone();
+      tz.setLocalLocation(tz.getLocation(location.identifier));
+    } catch (e) {
+      // Fallback or just ignore if it fails
+      print("Error setting timezone: $e");
+    }
   }
 }
