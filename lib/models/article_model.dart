@@ -4,6 +4,7 @@ class ArticleModel {
     required this.title,
     required this.description,
     required this.url,
+    this.sourceName,
   });
 
   final String? image;
@@ -11,12 +12,23 @@ class ArticleModel {
   final String? description;
   final String? url;
 
+  /// اسم المصدر من حقل `source.name` في News API.
+  final String? sourceName;
+
   factory ArticleModel.fromJson(Map<String, dynamic> json) {
+    String? source;
+    final src = json['source'];
+    if (src is Map) {
+      final n = src['name'];
+      if (n is String) source = n;
+    }
+
     return ArticleModel(
       image: json['urlToImage'] as String?,
       title: json['title'] as String?,
       description: json['description'] as String?,
       url: json['url'] as String?,
+      sourceName: source,
     );
   }
 
@@ -46,5 +58,12 @@ class ArticleModel {
       return 'https://www.webpagetest.org/blank.html';
     }
     return url!;
+  }
+
+  String sourceNameOrPlaceholder() {
+    if (sourceName != null && sourceName!.trim().isNotEmpty) {
+      return sourceName!.trim();
+    }
+    return '';
   }
 }

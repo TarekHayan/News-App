@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../core/cubit/locale_cubit.dart';
 import '../core/theme/app_styles.dart';
 import 'home_page.dart';
 
