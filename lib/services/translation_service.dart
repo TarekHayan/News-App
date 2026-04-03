@@ -9,7 +9,6 @@ class TranslationService {
   );
 
   /// Translates [text] from English to [targetLang] using the free MyMemory API.
-  /// Returns the original [text] unchanged if translation fails.
   static Future<String> translate(String text, String targetLang) async {
     if (text.isEmpty) return text;
     try {
@@ -30,7 +29,6 @@ class TranslationService {
       }
       return text;
     } catch (_) {
-      // Network error or API limit reached — fall back to original text
       return text;
     }
   }

@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:news_app/core/utils/app_styles.dart';
+import '../core/theme/app_styles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class FlutterLocalNotification {
@@ -26,22 +27,42 @@ class FlutterLocalNotification {
         >()
         ?.requestNotificationsPermission();
 
-    NotificationDetails details = NotificationDetails(
+    await _scheduleDailyNewsIfNeeded();
+  }
+
+  static Future<void> rescheduleFromSavedLanguage() async {
+    await flutterLocalNotificationsPlugin.cancel(id: 0);
+    await _scheduleDailyNewsIfNeeded();
+  }
+
+  static Future<void> _scheduleDailyNewsIfNeeded() async {
+    final prefs = await SharedPreferences.getInstance();
+    final enabled = prefs.getBool('notifications_enabled') ?? true;
+    if (!enabled) return;
+
+    final lang = prefs.getString('app_language') ?? 'en';
+    final ar = lang == 'ar';
+
+    final title = ar ? 'تطبيق الأخبار' : 'News App';
+    final body = ar ? 'توجد أخبار جديدة' : 'New news available';
+    final channelName = ar ? 'تحديثات الأخبار' : 'News updates';
+
+    final details = NotificationDetails(
       android: AndroidNotificationDetails(
-        "id 1",
-        "News apdated",
+        'news_daily_channel',
+        channelName,
         importance: Importance.max,
         priority: Priority.high,
         largeIcon: const DrawableResourceAndroidBitmap('ic_launcher'),
         color: AppStyle.originalPrimaryColor,
         sound: RawResourceAndroidNotificationSound(
-          "sound.mp3".split('.').first,
+          'sound.mp3'.split('.').first,
         ),
       ),
     );
 
     final now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate = tz.TZDateTime(
+    var scheduledDate = tz.TZDateTime(
       tz.local,
       now.year,
       now.month,
@@ -56,8 +77,8 @@ class FlutterLocalNotification {
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id: 0,
-      title: "News App",
-      body: "New News Available",
+      title: title,
+      body: body,
       scheduledDate: scheduledDate,
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.alarmClock,

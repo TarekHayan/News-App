@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
-class ErrorInRequest extends StatelessWidget {
-  const ErrorInRequest({super.key, required this.errorMassage});
-  final String errorMassage;
+class RequestErrorSliver extends StatelessWidget {
+  const RequestErrorSliver({super.key, required this.message});
+
+  final String message;
+
   @override
   Widget build(BuildContext context) {
     return SliverFillRemaining(
       child: Center(
         child: Text(
-          errorMassage,
-          style: TextStyle(
+          message,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,

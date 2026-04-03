@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:news_app/core/utils/app_styles.dart';
+import 'app_styles.dart';
 
-abstract class AppThems {
-  static ThemeData appThems() {
+abstract final class AppTheme {
+  static ThemeData materialTheme() {
     return ThemeData(
       scaffoldBackgroundColor: AppStyle.blackColor,
       appBarTheme: AppBarTheme(
@@ -14,7 +14,7 @@ abstract class AppThems {
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: AppStyle.whiteColor,
         ),
-        titleTextStyle: TextStyle(
+        titleTextStyle: const TextStyle(
           color: AppStyle.whiteColor,
           fontWeight: FontWeight.bold,
           fontSize: 24,

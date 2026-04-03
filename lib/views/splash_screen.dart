@@ -1,20 +1,22 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:news_app/core/utils/app_styles.dart';
-import 'HomePadge.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../core/cubit/locale_cubit.dart';
+import '../core/theme/app_styles.dart';
+import 'home_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  _SplashScreenState createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _fadeAnimation;
-  late Animation<double> _scaleAnimation;
+  late final AnimationController _controller;
+  late final Animation<double> _fadeAnimation;
+  late final Animation<double> _scaleAnimation;
 
   @override
   void initState() {
@@ -26,24 +28,24 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     _fadeAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
+      begin: 0,
+      end: 1,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
     _scaleAnimation = Tween<double>(
       begin: 0.6,
-      end: 1.0,
+      end: 1,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.elasticOut));
 
-    // Start animation
     _controller.forward();
 
     Timer(const Duration(seconds: 7), () {
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
-        PageRouteBuilder(
+        PageRouteBuilder<void>(
           transitionDuration: const Duration(milliseconds: 800),
-          pageBuilder: (_, __, ___) => const HomePadge(),
+          pageBuilder: (_, __, ___) => const HomePage(),
           transitionsBuilder: (_, animation, __, child) {
             return FadeTransition(opacity: animation, child: child);
           },
@@ -67,16 +69,12 @@ class _SplashScreenState extends State<SplashScreen>
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF1E1E1E), // Dark Gray
-              Color(0xFF000000), // Pure Black
-            ],
+            colors: [Color(0xFF1E1E1E), Color(0xFF000000)],
           ),
         ),
         child: Column(
           children: [
             const Spacer(),
-            // Animated Icon with Glow Effect
             ScaleTransition(
               scale: _scaleAnimation,
               child: FadeTransition(
@@ -105,12 +103,10 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
             const SizedBox(height: 40),
-
-            // Animated App Name
             FadeTransition(
               opacity: _fadeAnimation,
               child: Text(
-                "News App",
+                'News Cloud',
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
@@ -123,13 +119,11 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
             const SizedBox(height: 12),
-
-            // Animated Developer Name
             FadeTransition(
               opacity: _fadeAnimation,
-              child: const Text(
-                "Developed by Tarek Hayan",
-                style: TextStyle(
+              child: Text(
+                'Developed by Tarek Hayan',
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w300,
                   letterSpacing: 1.2,
@@ -138,8 +132,6 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
             const Spacer(),
-
-            // Loading indicator at the bottom
             FadeTransition(
               opacity: _fadeAnimation,
               child: Padding(

@@ -1,26 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../core/cubit/locale_cubit.dart';
+import '../core/theme/app_styles.dart';
+import '../core/widgets/circle_loading.dart';
+import '../models/article_model.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../models/articalModel.dart';
-import '../core/tools/circle_loadind.dart';
-import '../core/utils/app_styles.dart';
-import '../core/providers/locale_provider.dart';
 
-class DesignNewsList extends StatelessWidget {
-  const DesignNewsList({super.key, required this.articalmodel});
-  final Articalmodel articalmodel;
+class ArticleListItem extends StatelessWidget {
+  const ArticleListItem({super.key, required this.article});
+
+  final ArticleModel article;
 
   @override
   Widget build(BuildContext context) {
-    final locale = context.watch<LocaleProvider>();
-    final isArabic = locale.isArabic;
+    final cubit = context.watch<LocaleCubit>();
+    final isArabic = cubit.isArabic;
 
     return Column(
-      crossAxisAlignment:
-          isArabic ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      crossAxisAlignment: isArabic
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
       children: [
-        // ── Image ──────────────────────────────────────────────────
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 10),
           child: ClipRRect(
@@ -28,12 +29,12 @@ class DesignNewsList extends StatelessWidget {
             child: AspectRatio(
               aspectRatio: 16 / 9,
               child: CachedNetworkImage(
-                imageUrl: articalmodel.checkImage(),
+                imageUrl: article.imageUrlOrFallback(),
                 placeholder: (context, url) => Center(
-                  child: CircleLoadind(color: AppStyle.originalPrimaryColor),
+                  child: CircleLoading(color: AppStyle.originalPrimaryColor),
                 ),
                 errorWidget: (context, url, error) => Image.asset(
-                  "assets/Event-Image-Not-Found.jpg",
+                  'assets/Event-Image-Not-Found.jpg',
                   fit: BoxFit.cover,
                 ),
                 width: double.infinity,
@@ -42,13 +43,11 @@ class DesignNewsList extends StatelessWidget {
             ),
           ),
         ),
-
-        // ── Title (translated) ─────────────────────────────────────
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           child: _TranslatedText(
-            text: articalmodel.checkTitle(),
-            locale: locale,
+            text: article.titleOrFallback(),
+            localeCubit: cubit,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w900,
@@ -58,13 +57,11 @@ class DesignNewsList extends StatelessWidget {
             textAlign: isArabic ? TextAlign.right : TextAlign.left,
           ),
         ),
-
-        // ── Description (translated) ───────────────────────────────
         Padding(
           padding: const EdgeInsets.only(bottom: 15, left: 15, right: 15),
           child: _TranslatedText(
-            text: articalmodel.checkdes(),
-            locale: locale,
+            text: article.descriptionOrFallback(),
+            localeCubit: cubit,
             style: const TextStyle(
               color: Colors.white,
               fontSize: 10,
@@ -74,15 +71,13 @@ class DesignNewsList extends StatelessWidget {
             textAlign: isArabic ? TextAlign.right : TextAlign.left,
           ),
         ),
-
-        // ── Read More ──────────────────────────────────────────────
         Padding(
           padding: const EdgeInsets.only(bottom: 8, left: 15, right: 15),
           child: MouseRegion(
             cursor: SystemMouseCursors.click,
             child: GestureDetector(
               child: Text(
-                isArabic ? 'اقرأ المزيد' : 'Read More',
+                cubit.tn('Read more', 'اقرأ المزيد'),
                 style: const TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
@@ -91,7 +86,7 @@ class DesignNewsList extends StatelessWidget {
                 ),
               ),
               onTap: () async {
-                final Uri url = Uri.parse(articalmodel.checkurl());
+                final url = Uri.parse(article.urlOrFallback());
                 await launchUrl(url, mode: LaunchMode.inAppWebView);
               },
             ),
@@ -102,21 +97,17 @@ class DesignNewsList extends StatelessWidget {
   }
 }
 
-// ──────────────────────────────────────────────────────────────────────────────
-/// A widget that shows the original [text] immediately, then replaces it with
-/// the translated version once the Future resolves. Uses the provider's cache
-/// so repeated builds are instant after the first translation.
 class _TranslatedText extends StatelessWidget {
   const _TranslatedText({
     required this.text,
-    required this.locale,
+    required this.localeCubit,
     required this.style,
     this.maxLines,
     this.textAlign,
   });
 
   final String text;
-  final LocaleProvider locale;
+  final LocaleCubit localeCubit;
   final TextStyle style;
   final int? maxLines;
   final TextAlign? textAlign;
@@ -124,9 +115,8 @@ class _TranslatedText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-      // If language is English, translate() returns immediately
-      future: locale.translate(text),
-      initialData: text, // show original while loading
+      future: localeCubit.translate(text),
+      initialData: text,
       builder: (context, snapshot) {
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),

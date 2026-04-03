@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_offline/flutter_offline.dart';
-import 'package:news_app/core/providers/locale_provider.dart';
-import 'package:provider/provider.dart';
-import 'newsSearchPadge.dart';
+import '../core/cubit/locale_cubit.dart';
+import '../core/theme/app_styles.dart';
+import 'news_search_results_screen.dart';
 import '../widgets/network_error.dart';
-import '../core/utils/app_styles.dart';
 
-class Newssearch extends StatelessWidget {
-  const Newssearch({super.key});
+class NewsSearchScreen extends StatelessWidget {
+  const NewsSearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final localeProvider = Provider.of<LocaleProvider>(context);
+    final locale = context.watch<LocaleCubit>();
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -21,7 +21,7 @@ class Newssearch extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          localeProvider.tn('Search', 'البحث'),
+          locale.tn('Search', 'البحث'),
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.w600,
@@ -31,15 +31,15 @@ class Newssearch extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
-          crossAxisAlignment: localeProvider.isArabic
+          crossAxisAlignment: locale.isArabic
               ? CrossAxisAlignment.end
               : CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 30),
             Text(
-              localeProvider.tn('Discover', 'اكتشف'),
+              locale.tn('Discover', 'اكتشف'),
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 34,
@@ -49,7 +49,7 @@ class Newssearch extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              localeProvider.tn(
+              locale.tn(
                 'Find news from all over the world',
                 'ابحث عن الأخبار من جميع أنحاء العالم',
               ),
@@ -58,37 +58,33 @@ class Newssearch extends StatelessWidget {
             const SizedBox(height: 40),
             TextField(
               onSubmitted: (value) {
-                if (value.trim().isNotEmpty) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return OfflineBuilder(
-                          connectivityBuilder:
-                              (
-                                BuildContext context,
-                                List<ConnectivityResult> connectivity,
-                                Widget child,
-                              ) {
-                                final bool connected = !connectivity.contains(
-                                  ConnectivityResult.none,
-                                );
-                                return connected
-                                    ? Newssearchpadge(valu: value)
-                                    : NetworkError();
-                              },
-                          child: Container(),
-                        );
-                      },
+                final q = value.trim();
+                if (q.isEmpty) return;
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (context) => OfflineBuilder(
+                      connectivityBuilder:
+                          (
+                            BuildContext context,
+                            List<ConnectivityResult> connectivity,
+                            _,
+                          ) {
+                            final connected = !connectivity.contains(
+                              ConnectivityResult.none,
+                            );
+                            return connected
+                                ? NewsSearchResultsScreen(query: q)
+                                : const NetworkError();
+                          },
+                      child: const SizedBox.shrink(),
                     ),
-                  );
-                }
+                  ),
+                );
               },
               autofocus: true,
               style: const TextStyle(color: Colors.white, fontSize: 16),
               cursorColor: AppStyle.originalPrimaryColor,
-              textAlign: localeProvider.isArabic
-                  ? TextAlign.right
-                  : TextAlign.left,
+              textAlign: locale.isArabic ? TextAlign.right : TextAlign.left,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: const Color(0xFF1E1E1E),
@@ -104,7 +100,7 @@ class Newssearch extends StatelessWidget {
                     size: 26,
                   ),
                 ),
-                hintText: localeProvider.tn(
+                hintText: locale.tn(
                   'Keywords, topics, or sources...',
                   'كلمات مفتاحية، مواضيع، أو مصادر...',
                 ),

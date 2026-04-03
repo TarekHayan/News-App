@@ -1,0 +1,43 @@
+import 'package:flutter/material.dart';
+import '../models/card_data.dart';
+import 'category_card.dart';
+
+class CategoryCarousel extends StatelessWidget {
+  const CategoryCarousel({super.key});
+
+  static const List<CardData> _items = [
+    CardData(
+      image: 'assets/mike-kononov-lFv0V3_2H6s-unsplash.jpg',
+      text: 'business',
+    ),
+    CardData(
+      image: 'assets/jonas-von-werne-8VcWVVsrPBk-unsplash.jpg',
+      text: 'entertainment',
+    ),
+    CardData(image: 'assets/health.avif', text: 'health'),
+    CardData(
+      image: 'assets/national-cancer-institute-L7en7Lb-Ovc-unsplash.jpg',
+      text: 'science',
+    ),
+    CardData(
+      image: 'assets/timothy-tan-PAe2UhGo-S4-unsplash.jpg',
+      text: 'sports',
+    ),
+    CardData(
+      image: 'assets/ales-nesetril-Im7lZjxeLhg-unsplash.jpg',
+      text: 'technology',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 100,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: _items.length,
+        itemBuilder: (context, index) => CategoryCard(card: _items[index]),
+      ),
+    );
+  }
+}
