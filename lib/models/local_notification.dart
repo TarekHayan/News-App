@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../core/theme/app_styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,19 +19,49 @@ class FlutterLocalNotification {
         android: androidInitializationSettings,
         iOS: darwinInitializationSettings,
       );
+
       await flutterLocalNotificationsPlugin.initialize(
         settings: initializationSettings,
       );
 
-      flutterLocalNotificationsPlugin
+      // Create notification channel for Android
+      await _createNotificationChannel();
+
+      await requestPermission();
+
+      await _scheduleDailyNewsIfNeeded();
+    } catch (e) {
+      debugPrint("Error initializing notifications: $e");
+    }
+  }
+
+  static Future<void> _createNotificationChannel() async {
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'news_daily_channel', // id
+      'News Updates', // title
+      description: 'Daily news notifications', // description
+      importance: Importance.max,
+      playSound: true,
+    );
+
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin
+        >()
+        ?.createNotificationChannel(channel);
+  }
+
+  static Future<bool> requestPermission() async {
+    try {
+      final bool? granted = await flutterLocalNotificationsPlugin
           .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin
           >()
           ?.requestNotificationsPermission();
-
-      await _scheduleDailyNewsIfNeeded();
+      return granted ?? false;
     } catch (e) {
-      print("Error initializing notifications: $e");
+      debugPrint("Error requesting notification permission: $e");
+      return false;
     }
   }
 
@@ -39,9 +70,38 @@ class FlutterLocalNotification {
     await _scheduleDailyNewsIfNeeded();
   }
 
+  static Future<void> showTestNotification() async {
+    final prefs = await SharedPreferences.getInstance();
+    final lang = prefs.getString('app_language') ?? 'en';
+    final ar = lang == 'ar';
+
+    final title = ar ? 'اختبار الإشعارات' : 'Notification Test';
+    final body = ar ? 'هذا اختبار للإشعارات' : 'This is a test notification';
+
+    const NotificationDetails details = NotificationDetails(
+      android: AndroidNotificationDetails(
+        'news_daily_channel',
+        'News Updates',
+        importance: Importance.max,
+        priority: Priority.high,
+        largeIcon: DrawableResourceAndroidBitmap('ic_launcher'),
+        //sound: RawResourceAndroidNotificationSound('sound'),
+        enableVibration: true,
+        playSound: true,
+      ),
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      id: 999,
+      title: title,
+      body: body,
+      notificationDetails: details,
+    );
+  }
+
   static Future<void> _scheduleDailyNewsIfNeeded() async {
     final prefs = await SharedPreferences.getInstance();
-    final enabled = prefs.getBool('notifications_enabled') ?? true;
+    final enabled = prefs.getBool('notifications_enabled') ?? false;
     if (!enabled) return;
 
     final lang = prefs.getString('app_language') ?? 'en';
@@ -49,19 +109,18 @@ class FlutterLocalNotification {
 
     final title = 'News Cloud';
     final body = ar ? 'توجد أخبار جديدة' : 'New news available';
-    final channelName = ar ? 'تحديثات الأخبار' : 'News updates';
 
     final details = NotificationDetails(
       android: AndroidNotificationDetails(
         'news_daily_channel',
-        channelName,
+        ar ? 'تحديثات الأخبار' : 'News updates',
         importance: Importance.max,
         priority: Priority.high,
         largeIcon: const DrawableResourceAndroidBitmap('ic_launcher'),
         color: AppStyle.originalPrimaryColor,
-        sound: RawResourceAndroidNotificationSound(
-          'sound.mp3'.split('.').first,
-        ),
+        //sound: RawResourceAndroidNotificationSound('sound'),
+        enableVibration: true,
+        playSound: true,
       ),
     );
 
@@ -85,7 +144,7 @@ class FlutterLocalNotification {
       body: body,
       scheduledDate: scheduledDate,
       notificationDetails: details,
-      androidScheduleMode: AndroidScheduleMode.alarmClock,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
       matchDateTimeComponents: DateTimeComponents.time,
     );
   }

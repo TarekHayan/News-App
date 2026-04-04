@@ -34,7 +34,7 @@ class ArticleModel {
 
   String imageUrlOrFallback() {
     if (image == null || image!.isEmpty) {
-      return 'assets/Event-Image-Not-Found.jpg';
+      return 'assets/images/Event-Image-Not-Found.jpg';
     }
     return image!;
   }

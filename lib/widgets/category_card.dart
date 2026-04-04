@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../core/cubit/locale_cubit.dart';
 import '../core/localization/localized_strings.dart';
 import '../models/card_data.dart';

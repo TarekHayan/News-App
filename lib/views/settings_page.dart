@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import '../core/theme/app_styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../core/cubit/locale_cubit.dart';
+import '../core/theme/app_styles.dart';
+import '../models/local_notification.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -15,7 +16,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   static const _prefsKeyNotifications = 'notifications_enabled';
 
-  bool _notificationsEnabled = true;
+  bool _notificationsEnabled = false;
 
   @override
   void initState() {
@@ -27,7 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final prefs = await SharedPreferences.getInstance();
     if (!mounted) return;
     setState(() {
-      _notificationsEnabled = prefs.getBool(_prefsKeyNotifications) ?? true;
+      _notificationsEnabled = prefs.getBool(_prefsKeyNotifications) ?? false;
     });
   }
 
@@ -37,7 +38,14 @@ class _SettingsPageState extends State<SettingsPage> {
     if (!mounted) return;
     setState(() => _notificationsEnabled = enabled);
 
-    if (!enabled) {
+    if (enabled) {
+      // Request system permission when the user toggles the switch to ON
+      await FlutterLocalNotification.requestPermission();
+      // Show a test notification to verify it's working
+      await FlutterLocalNotification.showTestNotification();
+      // Reschedule notifications
+      await FlutterLocalNotification.rescheduleFromSavedLanguage();
+    } else {
       await FlutterLocalNotificationsPlugin().cancelAll();
     }
   }

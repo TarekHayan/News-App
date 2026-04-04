@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/core/cubit/locale_cubit.dart';
-import 'package:news_app/core/theme/app_styles.dart';
-import 'package:news_app/core/widgets/circle_loading.dart';
-import 'package:news_app/core/widgets/translated_text.dart';
-import 'package:news_app/models/article_model.dart';
+import '../core/cubit/locale_cubit.dart';
+import '../core/theme/app_styles.dart';
+import '../core/widgets/circle_loading.dart';
+import '../core/widgets/translated_text.dart';
+import '../models/article_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ArticleDetailScreen extends StatelessWidget {
